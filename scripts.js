@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Carregar a imagem base
     const image = new Image();
-    image.src = 'mirella55.png';  // Atualize com o caminho correto da imagem
+    image.src = 'Mirella55.png';  // Atualize com o caminho correto da imagem
 
     image.onload = () => {
         ctx.drawImage(image, 0, 0);
