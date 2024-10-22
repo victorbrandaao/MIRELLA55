@@ -18,8 +18,4 @@ Este projeto permite que os usuários personalizem um flyer digital com seu nome
 - JavaScript
 - Font Awesome para ícones
 
-## Como Usar
 
-1. Clone o repositório para sua máquina local:
-   ```bash
-   git clone https://github.com/seu_usuario/seu_repositorio.git
