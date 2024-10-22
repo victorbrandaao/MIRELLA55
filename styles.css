@@ -1,0 +1,50 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    margin-top: 50px;
+    background-color: #f4f4f9;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 10px;
+    font-size: 18px;
+    width: 300px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#flyerCanvas {
+    border: 2px solid #ddd;
+    margin-top: 20px;
+}
+
+#downloadButton {
+    margin-top: 20px;
+    background-color: #008CBA;
+}
+
+#downloadButton:hover {
+    background-color: #007BB5;
+}
