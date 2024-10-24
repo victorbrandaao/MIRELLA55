@@ -1,50 +1,43 @@
 body {
     font-family: 'Roboto', sans-serif;
     text-align: center;
-    margin-top: 50px;
     background-color: #f4f4f9;
-}
-
-h1 {
-    color: #333;
-    margin-bottom: 30px;
-}
-
-form {
-    margin-bottom: 20px;
-}
-
-input {
-    padding: 10px;
-    font-size: 18px;
-    width: 300px;
-    margin-right: 10px;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-#flyerCanvas {
-    border: 2px solid #ddd;
     margin-top: 20px;
 }
 
-#downloadButton {
-    margin-top: 20px;
-    background-color: #008CBA;
+@media (max-width: 640px) {
+    h1 {
+        font-size: 24px;
+    }
 }
 
-#downloadButton:hover {
-    background-color: #007BB5;
+canvas {
+    border-radius: 8px;
+    max-width: 100%;
+}
+
+.animate-fadeIn {
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+#feedbackMessage {
+    display: none;
+}
+
+#feedbackMessage.hidden {
+    display: none;
+}
+
+#feedbackMessage.animate-bounce {
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }

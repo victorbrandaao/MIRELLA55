@@ -9,79 +9,68 @@ document.addEventListener('DOMContentLoaded', function() {
     const shareButton = document.getElementById('shareButton');
     const feedbackMessage = document.getElementById('feedbackMessage');
 
-    // Carregar a imagem base
     const image = new Image();
-    image.src = 'Mirella55.png';  // Atualize com o caminho correto da imagem
+    image.src = 'Mirella55.png';
 
     image.onload = () => {
         ctx.drawImage(image, 0, 0);
-        updateName('NOME');  // Exemplo de número já iniciado
+        updateName('NOME');
     };
 
-    // Função para calcular e ajustar o tamanho da fonte
     function fitText(ctx, text, maxWidth, maxHeight) {
-        let fontSize = 150;  // Tamanho inicial da fonte
+        let fontSize = 150;
         do {
             fontSize--;
-            ctx.font = `bold ${fontSize}px ${fontSelect.value}`;  // Usar a fonte selecionada
+            ctx.font = `bold ${fontSize}px ${fontSelect.value}`;
         } while (ctx.measureText(text).width > maxWidth || fontSize > maxHeight);
         return fontSize;
     }
 
-    // Função para atualizar o nome na imagem
     function updateName(username) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);  // Limpa o canvas
-        ctx.drawImage(image, 0, 0);  // Redesenha a imagem
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(image, 0, 0);
 
-        const maxWidth = 1071 - 377;  // Largura do espaço disponível
-        const maxHeight = 869 - 733;  // Altura do espaço disponível
+        const maxWidth = 1071 - 377;
+        const maxHeight = 869 - 733;
 
-        // Ajustar o tamanho da fonte
         const fontSize = fitText(ctx, username, maxWidth, maxHeight);
         ctx.font = `bold ${fontSize}px ${fontSelect.value}`;
-        ctx.fillStyle = textColorInput.value;  // Cor personalizada
+        ctx.fillStyle = textColorInput.value;
         ctx.textAlign = 'center';
 
-        // Ativar sombra se a opção estiver selecionada
         if (textShadowCheckbox.checked) {
             ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
             ctx.shadowOffsetX = 2;
             ctx.shadowOffsetY = 2;
             ctx.shadowBlur = 5;
         } else {
-            ctx.shadowColor = 'transparent';  // Desativa a sombra
+            ctx.shadowColor = 'transparent';
         }
 
-        // Ajustar as coordenadas
-        let x = (377 + 1071) / 2 - 50;  // Mover um pouco para a esquerda
-        let y = (733 + 869) / 2 + 30;   // Descer um pouco
+        let x = (377 + 1071) / 2 - 50;
+        let y = (733 + 869) / 2 + 30;
 
         ctx.fillText(username, x, y);
 
-        // Exibir feedback visual
         feedbackMessage.classList.remove('hidden');
-        setTimeout(() => feedbackMessage.classList.add('hidden'), 2000);  // Oculta após 2 segundos
+        setTimeout(() => feedbackMessage.classList.add('hidden'), 2000);
     }
 
-    // Pré-visualização ao vivo
     usernameInput.addEventListener('input', function() {
-        const username = usernameInput.value || 'NOME';  // Se vazio, usar "55" como padrão
+        const username = usernameInput.value || 'NOME';
         updateName(username);
     });
 
-    // Atualizar o flyer quando a cor for mudada
     textColorInput.addEventListener('input', function() {
-        const username = usernameInput.value || 'NOME';  // Se vazio, usar "55" como padrão
+        const username = usernameInput.value || 'NOME';
         updateName(username);
     });
 
-    // Atualizar o flyer quando a fonte for mudada
     fontSelect.addEventListener('change', function() {
-        const username = usernameInput.value || 'NOME';  // Se vazio, usar "55" como padrão
+        const username = usernameInput.value || 'NOME';
         updateName(username);
     });
 
-    // Baixar a imagem personalizada
     downloadButton.addEventListener('click', function() {
         const link = document.createElement('a');
         link.download = 'flyer-personalizado.png';
@@ -89,10 +78,27 @@ document.addEventListener('DOMContentLoaded', function() {
         link.click();
     });
 
-    // Compartilhar o flyer nas redes sociais
     shareButton.addEventListener('click', function() {
-        const dataURL = canvas.toDataURL();
-        const shareURL = `https://example.com/share?image=${encodeURIComponent(dataURL)}`;
-        window.open(shareURL, '_blank'); // Substitua com a URL real do seu endpoint de compartilhamento
+        canvas.toBlob(function(blob) {
+            const file = new File([blob], 'flyer-personalizado.png', { type: 'image/png' });
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({
+                    files: [file],
+                    title: 'Meu Flyer Personalizado',
+                    text: 'Veja o flyer que personalizei para a campanha da Mirella!',
+                }).catch((error) => console.error('Erro no compartilhamento:', error));
+            } else {
+                // Caso o WhatsApp Web não suporte o compartilhamento de arquivos via Web Share API
+                alert('Seu dispositivo não suporta o compartilhamento de arquivos. Compartilhe manualmente.');
+            }
+        });
     });
+
+    // Função de compartilhamento via WhatsApp
+    const shareViaWhatsApp = () => {
+        const link = canvas.toDataURL('image/png');
+        const urlWhatsApp = `https://wa.me/?text=Veja%20o%20flyer%20que%20personalizei%20para%20a%20campanha%20da%20Mirella!%20Confira%20a%20imagem%20aqui%20${encodeURIComponent(link)}`;
+        window.open(urlWhatsApp, '_blank');
+    };
 });
