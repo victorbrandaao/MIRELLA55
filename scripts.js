@@ -9,11 +9,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const shareButton = document.getElementById('shareButton');
     const feedbackMessage = document.getElementById('feedbackMessage');
 
+    // Novo tamanho do canvas para stories do Instagram
+    canvas.width = 1080;
+    canvas.height = 1920;
+
     const image = new Image();
-    image.src = 'Mirella55.png';
+    image.src = 'Mirellanovo.png';
 
     image.onload = () => {
-        ctx.drawImage(image, 0, 0);
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
         updateName('NOME');
     };
 
@@ -27,17 +31,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateName(username) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(image, 0, 0);
-
-        const maxWidth = 1071 - 377;
-        const maxHeight = 869 - 733;
-
-        const fontSize = fitText(ctx, username, maxWidth, maxHeight);
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Desenha a imagem no tamanho do canvas
+    
+        const maxWidth = canvas.width * 0.6; // Largura máxima do texto
+        const maxHeight = canvas.height * 0.1; // Altura máxima do texto
+    
+        const fontSize = fitText(ctx, username, maxWidth, maxHeight); // Ajusta o tamanho do texto para caber na área desejada
         ctx.font = `bold ${fontSize}px ${fontSelect.value}`;
         ctx.fillStyle = textColorInput.value;
         ctx.textAlign = 'center';
-
+    
+        // Configurações de sombra
         if (textShadowCheckbox.checked) {
             ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
             ctx.shadowOffsetX = 2;
@@ -46,12 +51,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             ctx.shadowColor = 'transparent';
         }
+    
+        // Define a posição x e y onde o texto será inserido na imagem
+const x = canvas.width / 2; // Centraliza horizontalmente
+const y = canvas.height * 0.58; // Ajusta verticalmente para 85% da altura do canvas
 
-        let x = (377 + 1071) / 2 - 50;
-        let y = (733 + 869) / 2 + 30;
+ctx.fillText(username, x, y); // Adiciona o texto no canvas
 
-        ctx.fillText(username, x, y);
-
+    
         feedbackMessage.classList.remove('hidden');
         setTimeout(() => feedbackMessage.classList.add('hidden'), 2000);
     }
@@ -89,16 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     text: 'Veja o flyer que personalizei para a campanha da Mirella!',
                 }).catch((error) => console.error('Erro no compartilhamento:', error));
             } else {
-                // Caso o WhatsApp Web não suporte o compartilhamento de arquivos via Web Share API
                 alert('Seu dispositivo não suporta o compartilhamento de arquivos. Compartilhe manualmente.');
             }
         });
     });
-
-    // Função de compartilhamento via WhatsApp
-    const shareViaWhatsApp = () => {
-        const link = canvas.toDataURL('image/png');
-        const urlWhatsApp = `https://wa.me/?text=Veja%20o%20flyer%20que%20personalizei%20para%20a%20campanha%20da%20Mirella!%20Confira%20a%20imagem%20aqui%20${encodeURIComponent(link)}`;
-        window.open(urlWhatsApp, '_blank');
-    };
 });
